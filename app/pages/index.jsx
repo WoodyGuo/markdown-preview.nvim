@@ -151,6 +151,11 @@ export default class PreviewPage extends React.Component {
     this.startSocket(parseFloat(window.location.pathname.split('/')[2]))
   }
 
+  componentDidUpdate() {
+    // Re-initialize TOC toggle after React renders content
+    setTimeout(() => this.initTocToggle(), 0)
+  }
+
   onConnect() {
     console.log('connect success')
   }
@@ -295,6 +300,7 @@ export default class PreviewPage extends React.Component {
           renderDiagram()
           renderFlowchart()
           renderDot()
+          this.initTocToggle()
         }
         refreshScroll()
       })
@@ -314,6 +320,46 @@ export default class PreviewPage extends React.Component {
         }, 16);
       }
     }
+  }
+
+  initTocToggle() {
+    const toc = document.querySelector('.table-of-contents')
+    if (!toc) return
+
+    // Check if toggle already exists
+    if (toc.querySelector('.toc-toggle')) return
+
+    // Create toggle button
+    const toggle = document.createElement('button')
+    toggle.className = 'toc-toggle'
+    toggle.innerHTML = '◀'
+    toggle.title = 'Toggle TOC'
+
+    // Wrap TOC content
+    const tocContent = document.createElement('div')
+    tocContent.className = 'toc-content'
+
+    // Move all children except the toggle into the wrapper
+    while (toc.firstChild) {
+      tocContent.appendChild(toc.firstChild)
+    }
+
+    toc.appendChild(toggle)
+    toc.appendChild(tocContent)
+
+    // Load saved state
+    const isHidden = localStorage.getItem('toc-hidden') === 'true'
+    if (isHidden) {
+      toc.classList.add('hidden')
+      toggle.innerHTML = '▶'
+    }
+
+    // Toggle handler
+    toggle.addEventListener('click', () => {
+      const isNowHidden = toc.classList.toggle('hidden')
+      toggle.innerHTML = isNowHidden ? '▶' : '◀'
+      localStorage.setItem('toc-hidden', isNowHidden)
+    })
   }
 
   render() {

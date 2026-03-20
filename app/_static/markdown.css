@@ -74,6 +74,70 @@
   border-radius: 6px;
   padding: 16px;
   font-size: 14px;
+  transition: width 0.2s ease, padding 0.2s ease;
+}
+
+.markdown-body > .table-of-contents {
+  position: fixed;
+  top: 60px;
+  left: 20px;
+  width: 240px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 6px;
+  padding: 16px;
+  font-size: 14px;
+  transition: width 0.2s ease, padding 0.2s ease;
+}
+
+.toc-content {
+  margin-top: 28px;
+}
+
+.markdown-body > .table-of-contents.hidden {
+  width: 50px;
+  padding: 12px;
+}
+
+.markdown-body > .table-of-contents.hidden .toc-content {
+  display: none;
+}
+
+.toc-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--color-text-primary);
+  transition: background 0.2s ease;
+  z-index: 10;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.toc-toggle:hover {
+  background: var(--color-bg-primary);
+}
+
+.markdown-body > .table-of-contents.hidden .toc-toggle {
+  position: static;
+  margin: 0 auto;
+}
+
+.markdown-body:has(> .table-of-contents.hidden) {
+  padding-left: 95px;
 }
 
 .markdown-body > .table-of-contents ol {
